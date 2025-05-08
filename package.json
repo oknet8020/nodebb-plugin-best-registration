@@ -1,5 +1,5 @@
 {
-  "name": "nodebb-plugin-custom-registration",
+  "name": "nodebb-plugin-best-registration",
   "version": "1.0.0",
   "description": "Custom fields for NodeBB registration",
   "main": "plugin.js",
