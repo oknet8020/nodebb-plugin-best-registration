@@ -1,0 +1,9 @@
+{
+  "name": "nodebb-plugin-custom-registration",
+  "version": "1.0.0",
+  "description": "Custom fields for NodeBB registration",
+  "main": "plugin.js",
+  "nbbpm": {
+    "compatibility": "^3.0.0 || ^4.0.0"
+  }
+}
