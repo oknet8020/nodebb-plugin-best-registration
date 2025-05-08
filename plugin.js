@@ -3,7 +3,7 @@
 const plugin = {};
 
 plugin.init = function (params, callback) {
-  console.log('[custom-registration] תוסף הופעל');
+  console.log('[best-registration] תוסף הופעל');
   callback();
 };
 
