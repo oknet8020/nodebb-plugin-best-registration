@@ -6,7 +6,7 @@
   "library": "./library.js",
   "hooks": [
     {
-      "hook": "הכנס כאן את ההוק",
+      "hook": "filter:register.build",
       "method": "addFields"
     }
   ]
