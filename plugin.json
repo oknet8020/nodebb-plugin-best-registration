@@ -8,6 +8,14 @@
     {
       "hook": "filter:register.build",
       "method": "addFields"
+    },
+    {
+      "hook": "filter:register.check",
+      "method": "checkFields"
+    },
+    {
+      "hook": "action:user.create",
+      "method": "saveFields"
     }
   ]
 }
