@@ -2,7 +2,7 @@
   "name": "nodebb-plugin-best-registration",
   "version": "1.0.0",
   "description": "Custom fields for NodeBB registration",
-  "main": "plugin.js",
+  "main": "./library.js",
   "nbbpm": {
     "compatibility": "^3.0.0 || ^4.0.0"
   },
