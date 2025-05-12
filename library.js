@@ -1,76 +1,48 @@
 'use strict';
 
-// ייבוא מודול async לעבודה אסינכרונית במסד הנתונים
-const async = require('async');
-// ייבוא מודול db של NodeBB לשמירת ושליפת שדות
-const db = require.main.require('./src/database');
-
+// אובייקט התוסף שיייצא בסוף
 const plugin = {};
+plugin.addCaptcha1 = function(params, callback) {
 
-/**
- * filter:register.build
- * מוסיף שדות HTML לטופס ההרשמה
- */
-plugin.addFields = function(hookData, callback) {
-  // שורה: מוסיף שדה טקסט בשם 'businessName'
-  hookData.fields.push({
-    name: 'businessName',            // שם המפתח שישלח בטופס
-    type: 'text',                    // סוג השדה
-    label: 'שם העסק',                // התווית שתופיע למשתמש
-    placeholder: 'הכנס את שם העסק',  // טקסט מילוי מקום
-    validation: {
-      required: true                 // שדה חובה
-    }
-  });
+	// 🟢 שדה נוסף: שם העסק
+	const businessName = {
+		label: 'שם העסק',
+		html: '<div class="form-group"><input class="form-control" name="business-name" id="business-name" required /></div>'
+	};
 
-  // שורה: מוסיף שדה טקסט בשם 'businessAddress'
-  hookData.fields.push({
-    name: 'businessAddress',
-    type: 'text',
-    label: 'כתובת העסק',
-    placeholder: 'הכנס את כתובת העסק',
-    validation: {
-      required: true
-    }
-  });
+	// 🟢 שדה נוסף: כתובת עסק
+	const businessAddress = {
+		label: 'כתובת העסק',
+		html: '<div class="form-group"><input class="form-control" name="business-address" id="business-address" required /></div>'
+	};
 
-  // שורה: סיום הפונקציה, ממשיך לכריית שדות רגילה
-  callback(null, hookData);
+	// 🧩 הוספת השדות לתוך הטופס
+	if (params.templateData.regFormEntry && Array.isArray(params.templateData.regFormEntry)) {
+		params.templateData.regFormEntry.push(businessName);
+		params.templateData.regFormEntry.push(businessAddress);
+	}
+
+	callback(null, params);
 };
 
-/**
- * filter:register.check
- * בודק שכל שדה הוזן כראוי לפני יצירת המשתמש
- */
-plugin.checkFields = function(payload, callback) {
-  const userData = payload.userData;  // data.session לפני הכתיבה למסד
-  // שורה: אם לא הוזן שם העסק – מחזיר שגיאה
-  if (!userData.businessName || !userData.businessName.trim()) {
-    return callback(new Error('אנא מלא שם העסק')); 
-  }
-  // שורה: אם לא הוזנה כתובת העסק – מחזיר שגיאה
-  if (!userData.businessAddress || !userData.businessAddress.trim()) {
-    return callback(new Error('אנא מלא כתובת העסק')); 
-  }
-  // שורה: הכל תקין – ממשיכים בתהליך הרגיל
-  callback(null, payload);
+plugin.checkRegister1 = function(params, callback) {
+	// ✅ בדיקה של שדות חדשים
+	if (!params.req.body['business-name']) {
+		return callback({ source: 'business-name', message: 'יש לרשום שם עסק.' }, params);
+	}
+
+	if (!params.req.body['business-address']) {
+		return callback({ source: 'business-address', message: 'יש לרשום כתובת העסק.' }, params);
+	}
+
+	callback(null, params);
+};
+plugin.saveBusinessData1 = function(userData) {
+	const db = require.main.require('./src/database');
+	const uid = userData.uid;
+
+	db.setObjectField(`user:${uid}`, 'businessName', userData.req.body['business-name']);
+	db.setObjectField(`user:${uid}`, 'businessAddress', userData.req.body['business-address']);
 };
 
-/**
- * action:user.create
- * שומר את השדות החדשים במסד הנתונים אחרי יצירת המשתמש
- */
-plugin.saveFields = function(userData) {
-  const uid = userData.uid;
-  // שורה: אם קיים שם עסק – שמור אותו ב-hash של המשתמש
-  if (userData.businessName) {
-    db.setObjectField(`user:${uid}`, 'businessName', userData.businessName);
-  }
-  // שורה: אם קיימת כתובת – שמור אותה גם כן
-  if (userData.businessAddress) {
-    db.setObjectField(`user:${uid}`, 'businessAddress', userData.businessAddress);
-  }
-};
-
-// ייצוא התוסף כדי ש־NodeBB יטען אותו
 module.exports = plugin;
