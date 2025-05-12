@@ -5,17 +5,17 @@
   "url": "https://github.com/yourusername/best-registration",
   "library": "./library.js",
   "hooks": [
-    {
-      "hook": "filter:register.build",
-      "method": "addFields"
-    },
-    {
-      "hook": "filter:register.check",
-      "method": "checkFields"
-    },
-    {
-      "hook": "action:user.create",
-      "method": "saveFields"
-    }
-  ]
+	{
+		"hook": "filter:register.build", "method": "addCaptcha"
+	},
+	{
+		"hook": "filter:register.check", "method": "checkRegister"
+	},
+  {
+    "hook": "action:user.create", "method": "saveBusinessData"
+  }
+  ],
+  "nbbpm": {
+    "compatibility": "^1.17.0"
+  }
 }
