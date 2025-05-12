@@ -2,7 +2,7 @@
   "id": "nodebb-plugin-best-registration",
   "name": "best-registration",
   "description": "מוסיף שדות לרישום משתמשים.",
-  "url": "https://github.com/yourusername/best-registration",
+  "url": "https://github.com/oknet8020/nodebb-plugin-best-registration",
   "library": "./library.js",
   "hooks": [
 	{
