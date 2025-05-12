@@ -2,7 +2,7 @@
 
 // אובייקט התוסף שיייצא בסוף
 const plugin = {};
-plugin.addCaptcha1 = function(params, callback) {
+plugin.addCaptcha = function(params, callback) {
 
 	// 🟢 שדה נוסף: שם העסק
 	const businessName = {
@@ -25,7 +25,7 @@ plugin.addCaptcha1 = function(params, callback) {
 	callback(null, params);
 };
 
-plugin.checkRegister1 = function(params, callback) {
+plugin.checkRegister = function(params, callback) {
 	// ✅ בדיקה של שדות חדשים
 	if (!params.req.body['business-name']) {
 		return callback({ source: 'business-name', message: 'יש לרשום שם עסק.' }, params);
@@ -37,7 +37,7 @@ plugin.checkRegister1 = function(params, callback) {
 
 	callback(null, params);
 };
-plugin.saveBusinessData1 = function(userData) {
+plugin.saveBusinessData = function(userData) {
 	const db = require.main.require('./src/database');
 	const uid = userData.uid;
 
